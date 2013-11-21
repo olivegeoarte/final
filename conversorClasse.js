@@ -27,12 +27,12 @@
 
     // onSuccess: Get a snapshot of the current acceleration
     //
-    function onSuccess(acceleration) {
+   /* function onSuccess(acceleration) {
         alert('Acceleration X: ' + acceleration.x + '\n' +
               'Acceleration Y: ' + acceleration.y + '\n' +
               'Acceleration Z: ' + acceleration.z + '\n' +
               'Timestamp: '      + acceleration.timestamp + '\n');
-    }
+    }*/
 
     // onError: Failed to get the acceleration
     //
@@ -44,7 +44,7 @@
 			
 			
 			
-			function checkConnection() {
+			/*function checkConnection() {
 				var networkState = navigator.connection.type;
 				var states = {};
 					states[Connection.UNKNOWN] = 'Conexão desconhecida';
@@ -57,5 +57,5 @@
 					states[Connection.NONE] = 'Sem conexão rede';
 
 					states[networkState] = res1; 
-
+*/
 			}	

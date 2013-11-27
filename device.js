@@ -1,11 +1,11 @@
 // JavaScript Document
 
 
-    // Wait for device API libraries to load
+    
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
-    // device APIs are available
+    
     //
     function onDeviceReady() {
         var element = document.getElementById('deviceProperties');

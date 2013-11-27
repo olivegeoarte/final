@@ -1,3 +1,8 @@
+$(document).ready(function(e) {
+    onInit();
+	selecionaTodos();
+});
+
 var localDB = null;
 
 function onInit(){
@@ -99,6 +104,7 @@ function onCreate(){
                         updateForm("", "", "", "", "", "", "");
                         updateStatus("Inserção realizada, linha id: " + results.insertId);
                         queryAndUpdateOverview();
+						
                     }
                 }, errorHandler);
             });
@@ -135,16 +141,15 @@ function onSelect(htmlLIElement){
 
 function queryAndUpdateOverview(){
 
-
     var dataRows = document.getElementById("itemData").getElementsByClassName("data");
 	var oper = document.calcform.oper.value
 	
     while (dataRows.length > 0) {
         row = dataRows[0];
         document.getElementById("itemData").removeChild(row);
-    };
-
-	
+    	};
+	}
+	/*
     var query = "SELECT * FROM aplicativo;";
     try {
         localDB.transaction(function(transaction){
@@ -171,7 +176,37 @@ function queryAndUpdateOverview(){
     catch (e) {
         updateStatus("Error: SELECT não realizado " + e + ".");
     }
-}
+}*/
+
+
+
+/* Seleciona todos os registros do Banco de Dados*/
+	function selecionaTodos(){
+		//Realiza a leitura no banco
+		var query = "SELECT * FROM aplicativo;";
+		try {
+			localDB.transaction(function(transaction){			
+				transaction.executeSql(query, [], function(transaction, results){
+					objLista = "";
+					for (var i = 0; i < results.rows.length; i++) {
+						var row = results.rows.item(i);
+						objLista += "<tr><td>" + row['altura'] +" "+ row['oper'] + "</td> <td>" + row['largura'] + " " + row['oper'] + "</td><td>" + row['comprimento'] + " " + row['oper'] + " </tr>";
+																
+					}
+//    objLista += "</tbody>";
+             
+             $("#divLista").html(objLista);
+				}, function(transaction, error){
+					updateStatus("Erro: " + error.code + "\n Mensagem: " + error.message);
+				});
+			});
+		} 
+		catch (e) {
+			updateStatus("Error: SELECT não realizado " + e + ".");
+			}
+		}
+	
+
 
 
 errorHandler = function(transaction, error){

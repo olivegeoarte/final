@@ -36,7 +36,7 @@ function initDB(){
 }
 
 function createTables(){
-    var query = 'CREATE TABLE IF NOT EXISTS aplicativo(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, nome VARCHAR NOT NULL, altura VARCHAR NOT NULL, largura VARCHAR NOT NULL, comprimento VARCHAR NOT NULL, area VARCHAR NOT NULL, volume VARCHAR NOT NULL, oper VARCHAR NOT NULL);';
+    var query = 'CREATE TABLE IF NOT EXISTS aplicativo(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, altura VARCHAR NOT NULL, largura VARCHAR NOT NULL, comprimento VARCHAR NOT NULL, area VARCHAR NOT NULL, volume VARCHAR NOT NULL, oper VARCHAR NOT NULL);';
     try {
         localDB.transaction(function(transaction){
             transaction.executeSql(query, [], nullDataHandler, errorHandler);
@@ -82,7 +82,6 @@ function onDelete(){
 
 
 function onCreate(){
-	var nome = document.calcform.nome.value;
     var altura = document.calcform.altura.value;
     var largura = document.calcform.largura.value;
 	var comprimento = document.calcform.comprimento.value;
@@ -90,14 +89,14 @@ function onCreate(){
     var area = document.calcform.area.value;
     var volume = document.calcform.volume.value;
 	
-    if ( nome == "" || altura == "" || largura == "" || comprimento == "" || oper == "" || area == "" || volume == "") {
+    if (altura == "" || largura == "" || comprimento == "" || oper == "" || area == "" || volume == "") {
         updateStatus("Erro: 'altura' e 'largura' e 'oper' são campos obrigatórios!");
     }
     else {
-        var query = "insert into aplicativo (nome, altura, largura, comprimento, oper, area, volume) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        var query = "insert into aplicativo (altura, largura, comprimento, oper, area, volume) VALUES (?, ?, ?, ?, ?, ?);";
         try {
             localDB.transaction(function(transaction){
-                transaction.executeSql(query, [nome, altura, largura, comprimento, oper, area, volume], function(transaction, results){
+                transaction.executeSql(query, [altura, largura, comprimento, oper, area, volume], function(transaction, results){
                     if (!results.rowsAffected) {
                         updateStatus("Erro: Inserção não realizada");
                     }
@@ -127,7 +126,7 @@ function onSelect(htmlLIElement){
             
                 var row = results.rows.item(0);
                 
-                updateForm(row['id'], row['nome'], row['altura'], row['largura'], row['comprimento'], row['oper'], row['area'], row['volume']);
+                updateForm(row['id'], row['altura'], row['largura'], row['comprimento'], row['oper'], row['area'], row['volume']);
                 
             }, function(transaction, error){
                 updateStatus("Erro: " + error.code + "<br>Mensagem: " + error.message);
@@ -191,7 +190,7 @@ function queryAndUpdateOverview(){
 					objLista = "";
 					for (var i = 0; i < results.rows.length; i++) {
 						var row = results.rows.item(i);
-						objLista += "<tr><td>" + row['nome'] +" "+ row['altura'] +" "+ row['oper'] + "</td> <td>" + row['largura'] + " " + row['oper'] + "</td><td>" + row['comprimento'] + " " + row['oper'] + "</td><td> " +row['area'] + "  " + row['oper'] + " Quadrado "+"</td><td>" + row['volume']+ "Cubicos " + "</tr>";
+						objLista += "<tr><td>" + row['altura'] +" "+ row['oper'] + "</td> <td>" + row['largura'] + " " + row['oper'] + "</td><td>" + row['comprimento'] + " " + row['oper'] + "</td><td> " +row['area'] + "  " + row['oper'] + " Quadrado "+"</td><td>" + row['volume']+ "Cubicos " + "</tr>";
 																
 					}
 //    objLista += "</tbody>";
@@ -220,9 +219,8 @@ nullDataHandler = function(transaction, results){
 
 
 
-function updateForm(id, nome, altura, largura, comprimento, oper, area, volume){
+function updateForm(id, altura, largura, comprimento, oper, area, volume){
     document.calcform.id.value = id;
-    document.calcform.nome.value = nome;
     document.calcform.altura.value = altura;
     document.calcform.largura.value = largura;
     document.calcform.comprimento.value = comprimento;
